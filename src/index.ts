@@ -1,19 +1,6 @@
-import express from 'express'
-import { serverConfig } from './config/config'
 import { routesDms } from './dms/routesDms'
+import { app, onStart } from './config/server'
 
-const app = express()
-const PORT = serverConfig.PORT
-
-app.use(express.json())
 app.use('/dms', routesDms)
 
-function onStart () {
-  console.log(`Server running on port ${PORT}`)
-}
-
-app.listen(PORT, onStart)
-
-export {
-  app
-}
+app.listen(app.get('port'), onStart)

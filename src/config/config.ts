@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 config();
 
-type serverConfig = {
+type configServer = {
   PORT: number;
   /*database: {
     host: string;
@@ -16,7 +16,7 @@ type serverConfig = {
   };*/
 };
 
-export const serverConfig:serverConfig = {
+export const configServer:configServer = {
     PORT: parseInt(process.env.PORT || '4000'),
     /*database: {
       host: process.env.DB_HOST,
