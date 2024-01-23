@@ -1,10 +1,10 @@
-import { config } from 'dotenv';
-config();
+import { config } from 'dotenv'
+config()
 
-type configServer = {
-  PORT: number,
+interface ConfigServer {
+  PORT: number
   HOST: string
-  /*database: {
+  /* database: {
     host: string;
     port: number;
     username: string;
@@ -14,20 +14,20 @@ type configServer = {
   jwt: {
     secret: string;
     expiresIn: string;
-  };*/
-};
+  }; */
+}
 
-type configDms = {
-  SERVER: string,
-  DATABASE: string,
-  USER: string,
+interface ConfigDms {
+  SERVER: string
+  DATABASE: string
+  USER: string
   PASSWORD: string
 }
 
-export const configServer:configServer = {
+export const configServer: ConfigServer = {
   PORT: parseInt(process.env.PORT ?? '4000'),
-  HOST: process.env.HOST ?? 'localhost'
-  /*database: {
+  HOST: process.env.HOST ?? 'localhost',
+  /* database: {
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT, 10),
     username: process.env.DB_USER,
@@ -37,12 +37,12 @@ export const configServer:configServer = {
   jwt: {
     secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRES_IN,
-  },*/
+  }, */
 }
 
-export const configDms:configDms = {
+export const configDms: ConfigDms = {
   SERVER: process.env.DMS_SERVER ?? 'localhost',
   DATABASE: process.env.DMS_DATABASE ?? 'local',
   USER: process.env.DMS_USER ?? 'root',
-  PASSWORD: process.env.DMS_PASSWORD ?? ''
+  PASSWORD: process.env.DMS_PASSWORD ?? '',
 }

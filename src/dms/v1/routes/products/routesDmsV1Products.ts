@@ -1,11 +1,10 @@
-import { Router } from "express"
+import { Router } from 'express'
+import { getDmsProductsPrices } from '../../controllers/controllerDmsV1Products'
 
 const routesDmsV1Products = Router()
 
-routesDmsV1Products.get("/", (req, res) => {
-  res.send("Get method from products")
-})
+routesDmsV1Products.get('/', getDmsProductsPrices)
 
-export {
-  routesDmsV1Products
-} 
+routesDmsV1Products.get('/:id', getDmsProductsPrices)
+
+export { routesDmsV1Products }
