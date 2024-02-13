@@ -2,9 +2,11 @@
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.formatOnSave": true,
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "editor.formatOnSave": true,
+  "appService.defaultWebAppToDeploy": "undefined/subscriptions/1e636be0-04b1-4e30-bf6a-b3bea970cd98/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/pruebainterapi",
+  "appService.deploySubpath": ".",
 }

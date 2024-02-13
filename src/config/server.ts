@@ -9,7 +9,7 @@ app.set('port', PORT)
 app.set('host', HOST)
 app.use(express.json())
 
-function onStart(): void {
+function onStart (): void {
   console.log(`Server running on port http://${HOST}:${PORT}`)
 }
 

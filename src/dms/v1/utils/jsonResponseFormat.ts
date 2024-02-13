@@ -11,15 +11,15 @@ interface JsonResponseFormat {
 export const jsonResponseFormat = (
   statusCode: number = 404,
   message: string = '',
-  data: any[] | undefined = undefined,
+  data: any[] | undefined = undefined
 ): JsonResponseFormat => {
   return {
     success: statusCode === 200,
     status: {
       statusCode,
-      message,
+      message
     },
     data_length: data ? data.length : 0,
-    data,
+    data
   }
 }

@@ -10,7 +10,7 @@ interface ProcedureParams {
 }
 
 const getConnectionDms = async ({
-  requestTimeout = undefined,
+  requestTimeout = undefined
 }: ConnectionOptions): Promise<sql.ConnectionPool | null> => {
   try {
     const pool = await sql.connect({
@@ -21,8 +21,8 @@ const getConnectionDms = async ({
       options: {
         encrypt: false,
         trustServerCertificate: true,
-        requestTimeout,
-      },
+        requestTimeout
+      }
     })
     return pool
   } catch (error) {
@@ -32,10 +32,10 @@ const getConnectionDms = async ({
 
 export const execProcedureDms = async (
   procedure: string,
-  params: Array<{ name: string; value: number | string | boolean }>,
+  params: Array<{ name: string, value: number | string | boolean }>
 ) => {
   try {
-    const pool = await getConnectionDms({ requestTimeout: 600000 })
+    const pool = await getConnectionDms({ requestTimeout: 60000 })
     if (!pool) return
     const request = pool.request()
     params.forEach((param: ProcedureParams) => {
@@ -51,11 +51,11 @@ export const execProcedureDms = async (
 
 export const execQueryDms = async (query: string) => {
   try {
-    const pool = await getConnectionDms({ requestTimeout: 600000 })
+    const pool = await getConnectionDms({ requestTimeout: 60000 })
     if (!pool) return
     const request = pool.request()
     const result = await request.query(query)
-    pool.close()
+    await pool.close()
     return result
   } catch (error) {
     console.log(error)

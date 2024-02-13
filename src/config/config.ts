@@ -26,7 +26,7 @@ interface ConfigDms {
 
 export const configServer: ConfigServer = {
   PORT: parseInt(process.env.PORT ?? '4000'),
-  HOST: process.env.HOST ?? 'localhost',
+  HOST: process.env.HOST ?? 'localhost'
   /* database: {
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT, 10),
@@ -44,5 +44,5 @@ export const configDms: ConfigDms = {
   SERVER: process.env.DMS_SERVER ?? 'localhost',
   DATABASE: process.env.DMS_DATABASE ?? 'local',
   USER: process.env.DMS_USER ?? 'root',
-  PASSWORD: process.env.DMS_PASSWORD ?? '',
+  PASSWORD: process.env.DMS_PASSWORD ?? ''
 }
