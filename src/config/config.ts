@@ -41,8 +41,8 @@ export const configServer: ConfigServer = {
 }
 
 export const configDms: ConfigDms = {
-  SERVER: process.env.DMS_SERVER ?? 'localhost',
-  DATABASE: process.env.DMS_DATABASE ?? 'local',
-  USER: process.env.DMS_USER ?? 'root',
-  PASSWORD: process.env.DMS_PASSWORD ?? ''
+  SERVER: process.env.INTER_DMS_SERVER ?? 'localhost',
+  DATABASE: process.env.INTER_DMS_DATABASE ?? 'local',
+  USER: process.env.INTER_DMS_USER ?? 'root',
+  PASSWORD: process.env.INTER_DMS_PASSWORD ?? ''
 }
