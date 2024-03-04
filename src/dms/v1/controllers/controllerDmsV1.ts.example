@@ -1,0 +1,10 @@
+import { type RequestHandler } from 'express'
+import { jsonResponseFormat } from '../utils/jsonResponseFormat'
+
+export const methodServiceRouteOptions: RequestHandler = (req, res) => {
+  try {
+    res.json(jsonResponseFormat(200, 'OK'))
+  } catch (error) {
+    res.json(jsonResponseFormat(500, 'Error'))
+  }
+}
