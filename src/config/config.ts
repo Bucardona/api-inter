@@ -4,14 +4,7 @@ config()
 interface ConfigServer {
   PORT: number
   HOST: string
-  /* database: {
-    host: string;
-    port: number;
-    username: string;
-    password: string;
-    database: string;
-  };
-  jwt: {
+  /* jwt: {
     secret: string;
     expiresIn: string;
   }; */
