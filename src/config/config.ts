@@ -20,14 +20,7 @@ interface ConfigDms {
 export const configServer: ConfigServer = {
   PORT: parseInt(process.env.PORT ?? '4000'),
   HOST: process.env.HOST ?? 'localhost'
-  /* database: {
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT, 10),
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-  },
-  jwt: {
+  /* jwt: {
     secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRES_IN,
   }, */
