@@ -1,9 +1,11 @@
 import { Router } from 'express'
-import { getDmsProductsPrices } from '../../controllers/controllerDmsV1Products'
+import { getDmsProductsInter, getDmsProductsPrices } from '../../controllers/controllerDmsV1Products'
 
 const routesDmsV1Products = Router()
 
 routesDmsV1Products.get('/', getDmsProductsPrices)
+
+routesDmsV1Products.get('/inter', getDmsProductsInter)
 
 routesDmsV1Products.get('/:id', getDmsProductsPrices)
 
