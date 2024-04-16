@@ -2,7 +2,7 @@ import type { RequestHandler } from 'express'
 import { jsonResponseFormat } from '../utils/jsonResponseFormat'
 import { execProcedureDms } from '@/dms/models/dmsDatabase'
 
-export const getDmsProductsPrices: RequestHandler = async (req, res) => {
+export const getDmsProductsPrices: RequestHandler = (async (req, res) => {
   const { id = 0 } = req.params // id del producto: 0 = todos, int = para un producto
 
   const dateStart = new Date()
@@ -82,6 +82,33 @@ export const getDmsProductsPrices: RequestHandler = async (req, res) => {
       res.json(jsonResponseFormat(200, 'OK', products))
     } else res.json(jsonResponseFormat(400, 'Not Found'))
   } catch (error) {
-    return { message: error }
+    console.log(error)
   }
-}
+}) as RequestHandler
+
+export const getDmsProductsInter = (async (req, res) => {
+  try {
+    const result = await execProcedureDms('JI_Inventario_Stock', [
+      { name: 'MostrarEnWeb', value: 1 },
+      { name: 'ApplyConditionItems', value: 0 },
+      { name: 'ApplyWebCondition', value: 0 }
+    ])
+    console.log(result)
+
+    if (result && result.recordset.length > 0) {
+      const products: object[] = JSON.parse(`${result.recordset[0].data}`)
+
+      /* Transformar datos */
+
+      /* products.map((product, i) => {
+        products[i].Grupo = JSON.parse(product.Grupo)
+      }) */
+
+      /* .Transformar datos */
+
+      res.json(jsonResponseFormat(200, 'OK', products))
+    } else res.json(jsonResponseFormat(400, 'Not Found'))
+  } catch (error) {
+    console.log(error)
+  }
+}) as RequestHandler
