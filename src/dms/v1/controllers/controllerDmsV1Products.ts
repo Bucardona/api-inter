@@ -2,7 +2,7 @@ import type { RequestHandler } from 'express'
 import { jsonResponseFormat } from '../utils/jsonResponseFormat'
 import { execProcedureDms } from '@/dms/models/dmsDatabase'
 
-export const getDmsProductsPrices: RequestHandler = (async (req, res) => {
+/* export const getDmsProductsPrices: RequestHandler = (async (req, res) => {
   const { id = 0 } = req.params // id del producto: 0 = todos, int = para un producto
 
   const dateStart = new Date()
@@ -71,9 +71,9 @@ export const getDmsProductsPrices: RequestHandler = (async (req, res) => {
         )
       }
 
-      /* Transformar datos */
+      // Transformar datos
 
-      /* .Transformar datos */
+      // .Transformar datos
 
       const dateEnd = new Date()
       console.log(
@@ -84,16 +84,77 @@ export const getDmsProductsPrices: RequestHandler = (async (req, res) => {
   } catch (error) {
     console.log(error)
   }
-}) as RequestHandler
+}) as RequestHandler */
 
-export const getDmsProductsInter = (async (req, res) => {
+export const getDmsProducts = (async (req, res) => {
+  const defaultPageSize = '50'
+  const defaultPage = '1'
+
+  const { filter, populate, pageSize = defaultPageSize, page = defaultPage } = req.query
+
+  const filters: Array<{ name: string, value: string }> | undefined = []
+  const populates: Array<{ name: string, value: boolean }> | undefined = []
+  const pagination: Array<{ name: string, value: number }> | undefined = []
+
+  if (pageSize || page) {
+    if (typeof pageSize === 'string') {
+      const pageSizeValue = Number(pageSize) || Number(defaultPageSize)
+      pagination.push({ name: 'PageSize', value: pageSizeValue })
+    }
+    if (typeof page === 'string') {
+      const pageValue = Number(page) || Number(defaultPage)
+      pagination.push({ name: 'Page', value: pageValue })
+    }
+  }
+  if (filter) {
+    for (const [name, value] of Object.entries(filter)) {
+      if (typeof value === 'string') {
+        filters.push({
+          name: name.slice(0, 1).toUpperCase() + name.slice(1),
+          value
+        })
+      } else {
+        continue
+      }
+    }
+  }
+  if (populate) {
+    if (typeof populate === 'string') {
+      const populateValues = populate.split(',')
+      populateValues.forEach((value) => {
+        populates.push({
+          name: 'Populate' + value.slice(0, 1).toUpperCase() + value.slice(1),
+          value: true
+        })
+      })
+    } else {
+      for (const [name, value] of Object.entries(populate)) {
+        if (typeof value === 'string') {
+          populates.push({
+            name: 'Populate' + name.slice(0, 1).toUpperCase() + name.slice(1),
+            value: value === 'true'
+          })
+        } else {
+          continue
+        }
+      }
+    }
+  }
+  /* if (Number(id) > 0) {
+
+  } */
   try {
     const result = await execProcedureDms('JI_Inventario_Stock', [
-      { name: 'PopulateStockDetails', value: true },
+      ...filters,
+      ...populates,
+      ...pagination
+    ] /* [
+      { name: 'PopulateStockDetails', value: false },
       { name: 'PopulateStock', value: false },
       { name: 'PopulateCost', value: false },
       { name: 'PopulatePrice', value: false },
       { name: 'PopulateGroup', value: false },
+      { name: 'Id', value: '' },
       { name: 'Sku', value: '' },
       { name: 'ProductCategory', value: '' },
       { name: 'IsWebActive', value: '' },
@@ -105,21 +166,18 @@ export const getDmsProductsInter = (async (req, res) => {
       { name: 'FilterGroup5', value: '' },
       { name: 'FilterGroup6', value: '' },
       { name: 'FilterGroup7', value: '' },
-      { name: 'FilterProductType', value: 'tiendas' }
-    ])
-    console.log(result)
+      { name: 'FilterProductType', value: '' }
+    ] */)
     if (result && result.recordset.length > 0) {
       const products: object[] = JSON.parse(`${result.recordset[0].data}`)
-
-      /* Transformar datos */
-
-      /* products.map((product, i) => {
-        products[i].Grupo = JSON.parse(product.Grupo)
-      }) */
-
-      /* .Transformar datos */
-
-      res.json(jsonResponseFormat(200, 'OK', products))
+      const metadata = {
+        url: `${req.protocol}://${req.hostname}:${process.env.PORT}${req.originalUrl}`,
+        total: Number(JSON.parse(`${result.recordset[0].totalRecords}`)),
+        totalPage: products?.length,
+        page: Number(page),
+        pageSize: Number(pageSize)
+      }
+      res.json(jsonResponseFormat(200, 'OK', products, metadata))
     } else res.json(jsonResponseFormat(400, 'Not Found'))
   } catch (error) {
     console.log(error)
