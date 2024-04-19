@@ -89,12 +89,25 @@ export const getDmsProductsPrices: RequestHandler = (async (req, res) => {
 export const getDmsProductsInter = (async (req, res) => {
   try {
     const result = await execProcedureDms('JI_Inventario_Stock', [
-      { name: 'MostrarEnWeb', value: 1 },
-      { name: 'ApplyConditionItems', value: 0 },
-      { name: 'ApplyWebCondition', value: 0 }
+      { name: 'PopulateStockDetails', value: true },
+      { name: 'PopulateStock', value: false },
+      { name: 'PopulateCost', value: false },
+      { name: 'PopulatePrice', value: false },
+      { name: 'PopulateGroup', value: false },
+      { name: 'Sku', value: '' },
+      { name: 'ProductCategory', value: '' },
+      { name: 'IsWebActive', value: '' },
+      { name: 'HasImage', value: '' },
+      { name: 'FilterGroup1', value: '' },
+      { name: 'FilterGroup2', value: '' },
+      { name: 'FilterGroup3', value: '' },
+      { name: 'FilterGroup4', value: '' },
+      { name: 'FilterGroup5', value: '' },
+      { name: 'FilterGroup6', value: '' },
+      { name: 'FilterGroup7', value: '' },
+      { name: 'FilterProductType', value: 'tiendas' }
     ])
     console.log(result)
-
     if (result && result.recordset.length > 0) {
       const products: object[] = JSON.parse(`${result.recordset[0].data}`)
 
