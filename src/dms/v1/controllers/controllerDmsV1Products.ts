@@ -87,7 +87,7 @@ import { execProcedureDms } from '@/dms/models/dmsDatabase'
 }) as RequestHandler */
 
 export const getDmsProducts = (async (req, res) => {
-  const defaultPageSize = '50'
+  const defaultPageSize = '10'
   const defaultPage = '1'
 
   const { filter, populate, pageSize = defaultPageSize, page = defaultPage } = req.query
