@@ -1,4 +1,3 @@
-import { parse } from 'path'
 import querystring from 'querystring'
 
 interface MetadataParamsFormat {
