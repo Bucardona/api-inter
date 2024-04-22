@@ -1,3 +1,5 @@
+import querystring from 'querystring'
+
 interface MetadataParamsFormat {
   total: number
   totalPage: number | null
@@ -24,6 +26,24 @@ interface JsonResponseFormat {
   data?: any[]
 }
 
+const getMetadataUrl = (url: string, page: number, pageSize: number): string => {
+  const baseUrl = url.slice(0, url.indexOf('?'))
+  let queries = querystring.decode(url.slice(url.indexOf('?') + 1))
+
+  queries = { ...queries, page: page.toString(), pageSize: pageSize.toString() }
+
+  console.log(baseUrl + '?' + querystring.encode(queries))
+  return baseUrl + '?' + querystring.encode(queries).replace('%5B', '[').replace('%5D', ']')
+}
+const getMetadataLinks = (url: string, page: number, pageSize: number, total: number): MetadataResponseFormat['links'] => {
+  return {
+    first: getMetadataUrl(url, 1, pageSize),
+    previous: page > 1 ? getMetadataUrl(url, page - 1, pageSize) : null,
+    next: page < Math.ceil(total / pageSize) ? getMetadataUrl(url, page + 1, pageSize) : null,
+    last: getMetadataUrl(url, Math.ceil(total / pageSize), pageSize)
+  }
+}
+
 export const jsonResponseFormat = (
   statusCode: number = 404,
   message: string = '',
@@ -39,12 +59,8 @@ export const jsonResponseFormat = (
     metadata: metadata && {
       ...metadata,
       lastPage: Math.ceil(metadata.total / metadata.pageSize),
-      links: {
-        first: `${metadata.url}?pageSize=${metadata.pageSize}&page=1`,
-        previous: metadata.page > 1 ? `${metadata.url}?pageSize=${metadata.pageSize}&page=${metadata.page - 1}` : null,
-        next: metadata.page < Math.ceil(metadata.total / metadata.pageSize) ? `${metadata.url}?pageSize=${metadata.pageSize}&page=${metadata.page + 1}` : null,
-        last: `${metadata.url}?pageSize=${metadata.pageSize}&page=${Math.ceil(metadata.total / metadata.pageSize)}`
-      }
+      url: getMetadataUrl(metadata.url, metadata.page, metadata.pageSize),
+      links: getMetadataLinks(metadata.url, metadata.page, metadata.pageSize, metadata.total)
     },
     data
   }
