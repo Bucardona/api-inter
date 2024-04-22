@@ -178,7 +178,7 @@ export const getDmsProducts = (async (req, res) => {
     if (result && result.recordset.length > 0) {
       const products: object[] = JSON.parse(`${result.recordset[0].data}`)
       const metadata = {
-        url: `${req.protocol}://${req.hostname}:${process.env.PORT}${req.originalUrl}`,
+        url: `${req.protocol}://${req.hostname}${req.hostname === 'localhost' && process.env.PORT}${req.originalUrl}`,
         total: Number(JSON.parse(`${result.recordset[0].totalRecords}`)),
         totalPage: products?.length,
         page: Number(page),
