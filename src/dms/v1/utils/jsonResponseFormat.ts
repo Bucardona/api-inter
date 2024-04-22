@@ -1,3 +1,4 @@
+import { parse } from 'path'
 import querystring from 'querystring'
 
 interface MetadataParamsFormat {
@@ -27,13 +28,13 @@ interface JsonResponseFormat {
 }
 
 const getMetadataUrl = (url: string, page: number, pageSize: number): string => {
-  const baseUrl = url.slice(0, url.indexOf('?'))
-  let queries = querystring.decode(url.slice(url.indexOf('?') + 1))
+  const baseUrl = url.slice(0, url.includes('?') ? url.indexOf('?') : undefined)
+  const queries = url.slice(url.indexOf('?') + 1)
 
-  queries = { ...queries, page: page.toString(), pageSize: pageSize.toString() }
+  const parsedQueries = baseUrl !== queries ? querystring.parse(queries) : {}
+  const parsedPaginatedQueries: querystring.ParsedUrlQuery = { page: page.toString(), pageSize: pageSize.toString() }
 
-  console.log(baseUrl + '?' + querystring.encode(queries))
-  return baseUrl + '?' + querystring.encode(queries).replace('%5B', '[').replace('%5D', ']')
+  return baseUrl + '?' + querystring.encode({ ...parsedQueries, ...parsedPaginatedQueries }).replace('%5B', '[').replace('%5D', ']')
 }
 const getMetadataLinks = (url: string, page: number, pageSize: number, total: number): MetadataResponseFormat['links'] => {
   return {
