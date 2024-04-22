@@ -107,7 +107,14 @@ export const getDmsProducts = (async (req, res) => {
     }
   }
   if (filter) {
-    for (const [name, value] of Object.entries(filter)) {
+    for (let [name, value] of Object.entries(filter)) {
+      if (name === 'filterProductType') {
+        if (value === 'store') {
+          value = 'relojes,joyas,gafas,accesorios,varios'
+        } else if (value === 'workshop') {
+          value = 'servicios,repuestos relojeria,piedras,materia prima,repuestos joyeria'
+        }
+      }
       if (typeof value === 'string') {
         filters.push({
           name: name.slice(0, 1).toUpperCase() + name.slice(1),
@@ -141,8 +148,8 @@ export const getDmsProducts = (async (req, res) => {
     }
   }
   /* if (Number(id) > 0) {
-
   } */
+  console.log(filters, populates, pagination)
   try {
     const result = await execProcedureDms('JI_Inventario_Stock', [
       ...filters,
