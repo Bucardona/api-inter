@@ -108,7 +108,7 @@ export const getDmsProducts = (async (req, res) => {
   }
   if (filter) {
     for (let [name, value] of Object.entries(filter)) {
-      if (name === 'filterGroup1') {
+      if (name === 'groupCode1') {
         if (value === 'store') {
           value = 'relojes,joyas,gafas,accesorios,varios'
         } else if (value === 'workshop') {
