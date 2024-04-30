@@ -151,7 +151,7 @@ export const getDmsProducts = (async (req, res) => {
   } */
   console.log(filters, populates, pagination)
   try {
-    const result = await execProcedureDms('JI_Inventario_Stock', [
+    const result = await execProcedureDms('JI_Products', [
       ...filters,
       ...populates,
       ...pagination
