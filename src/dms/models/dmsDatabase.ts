@@ -51,11 +51,10 @@ export const execProcedureDms = async (
 
 export const execQueryDms = async (query: string) => {
   try {
-    const pool = await getConnectionDms({ requestTimeout: 60000 })
+    const pool = await getConnectionDms({ requestTimeout: 15000 })
     if (!pool) return
     const request = pool.request()
     const result = await request.query(query)
-    await pool.close()
     return result
   } catch (error) {
     console.log(error)
