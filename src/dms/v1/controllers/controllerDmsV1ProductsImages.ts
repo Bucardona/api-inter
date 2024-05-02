@@ -46,17 +46,18 @@ export const getDmsImagesFilteringSku = (async (req, res) => {
 
   const { sku } = filter
 
-  try {
+  try { /*
     const result = await execQueryDms(`SELECT TOP 1
     data = (
       SELECT CAST(imagen AS varbinary(max))
       FOR XML PATH(''), BINARY BASE64
     )
-  FROM cot_item WHERE codigo = '${String(sku).toUpperCase()}'`)
+  FROM cot_item WHERE codigo = '${String(sku).toUpperCase()}'`) */
+    const result = await execQueryDms(`SELECT TOP 1 imagen FROM cot_item WHERE codigo = '${String(sku).toUpperCase()}'`)
 
-    if (result && result.recordset.length > 0 && result.recordset[0].data) {
-      const { data }: { data: string } = result.recordset[0]
-      let img = Buffer.from(data, 'base64')
+    if (result && result.recordset.length > 0 && result.recordset[0].imagen) {
+      const { imagen }: { imagen: string } = result.recordset[0]
+      let img = Buffer.from(imagen)
 
       if (
         modify?.imgSize &&
