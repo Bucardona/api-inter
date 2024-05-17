@@ -68,6 +68,7 @@ export const getDmsProducts = (async (req, res) => {
   console.log(filters, populates, pagination)
   try {
     const result = await execProcedureDms('JI_Products', [
+      { name: 'Company', value: '601' },
       ...filters,
       ...populates,
       ...pagination
