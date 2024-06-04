@@ -49,11 +49,32 @@ export const execProcedureDms = async (
   }
 }
 
-export const execQueryDms = async (query: string) => {
+export const execQueryDms = async (
+  query: string,
+  inputs: Array<{ name: string, type: 'number' | 'string' | 'boolean' | 'null', value: number | string | boolean | null }>
+) => {
   try {
     const pool = await getConnectionDms({ requestTimeout: 15000 })
     if (!pool) return
     const request = pool.request()
+    inputs.forEach((input) => {
+      switch (input.type) {
+        case 'number':
+          if (typeof input.value === 'number') request.input(input.name, sql.Int, input.value)
+          break
+        case 'string':
+          if (typeof input.value === 'string') request.input(input.name, sql.NVarChar, input.value)
+          break
+        case 'boolean':
+          if (typeof input.value === 'boolean') request.input(input.name, sql.Bit, input.value)
+          break
+        case 'null':
+          if (input.value === null) request.input(input.name, sql.NVarChar, null)
+          break
+        default:
+          break
+      }
+    })
     const result = await request.query(query)
     return result
   } catch (error) {
