@@ -6,7 +6,7 @@ import sharp from 'sharp'
 export const getDmsImageById = (async (req, res) => {
   const { id } = req.params // id del producto: 0 = todos, int = para un producto
   try {
-    const result = await execQueryDms(`SELECT TOP 1 imagen FROM cot_item WHERE id = '${String(id).toUpperCase()}'`)
+    const result = await execQueryDms('SELECT TOP 1 imagen FROM cot_item WHERE id = @id', [{ name: 'id', type: 'number', value: Number(id) }])
 
     if (result && result.recordset.length > 0 && result.recordset[0].imagen) {
       const { imagen }: { imagen: string } = result.recordset[0]
@@ -45,7 +45,7 @@ export const getDmsImagesFilteringSku = (async (req, res) => {
       FOR XML PATH(''), BINARY BASE64
     )
   FROM cot_item WHERE codigo = '${String(sku).toUpperCase()}'`) */
-    const result = await execQueryDms(`SELECT TOP 1 imagen FROM cot_item WHERE codigo = '${String(sku).toUpperCase()}'`)
+    const result = await execQueryDms('SELECT TOP 1 imagen FROM cot_item WHERE codigo = @sku', [{ name: 'sku', type: 'string', value: String(sku).toUpperCase() }])
 
     if (result && result.recordset.length > 0 && result.recordset[0].imagen) {
       const { imagen }: { imagen: string } = result.recordset[0]
